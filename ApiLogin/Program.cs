@@ -1,5 +1,6 @@
 
 using ApiLogin.Data;
+using ApiLogin.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiLogin
@@ -21,6 +22,8 @@ namespace ApiLogin
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = builder.Build();
 
