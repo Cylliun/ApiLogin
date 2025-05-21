@@ -1,7 +1,10 @@
 
 using ApiLogin.Data;
+using ApiLogin.Models;
 using ApiLogin.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace ApiLogin
 {
@@ -23,7 +26,19 @@ namespace ApiLogin
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedAccount = false;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services.AddScoped<IUserRepository, UserServices>();
 
             var app = builder.Build();
 
