@@ -1,7 +1,6 @@
 ﻿using ApiLogin.Data;
 using ApiLogin.Dto;
 using ApiLogin.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace ApiLogin.Services
 {
@@ -13,9 +12,27 @@ namespace ApiLogin.Services
             _context = context; 
         }
 
-        public Task<ResponseModel<User>> GetUserDatails(int Id)
+        public async Task<ResponseModel<User>> GetUserDatails(int Id)
         {
-            throw new NotImplementedException();
+            ResponseModel<User> response = new ResponseModel<User>();
+
+            var user = await _context.Users.FindAsync(Id);
+
+            if (user == null) {
+
+                response.Success = false;
+                response.Message = "Nenhum usuário encontrado";
+                return response;
+                
+            }
+
+            response.Data = user;
+            response.Success = true;
+            response.Message = "Usuário encontrado com sucesso";
+
+            return response;
+
+
         }
 
         public Task<ResponseModel<User>> PostLogin(UserLoginDto userLoginDto)
