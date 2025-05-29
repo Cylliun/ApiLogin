@@ -4,6 +4,7 @@ using ApiLogin.Models;
 using ApiLogin.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 
 namespace ApiLogin
@@ -46,6 +47,7 @@ namespace ApiLogin
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.MapScalarApiReference();
             }
 
             app.UseHttpsRedirection();
